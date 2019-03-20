@@ -1,4 +1,5 @@
 *.iml
 *.log
 *.temp
-target/*
+.idea
+/target/*
