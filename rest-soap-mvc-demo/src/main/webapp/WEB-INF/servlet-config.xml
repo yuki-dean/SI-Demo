@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/integration
-	http://www.springframework.org/schema/integration/spring-integration.xsd
-	http://www.springframework.org/schema/integration/http
-	http://www.springframework.org/schema/integration/http/spring-integration-http.xsd"
-	xmlns:int-http="http://www.springframework.org/schema/integration/http"
-	xmlns:ws="http://www.springframework.org/schema/integration/ws"
-	xmlns:int="http://www.springframework.org/schema/integration">
-
+	   xmlns:beans="http://www.springframework.org/schema/beans"
+	   xmlns:stream="http://www.springframework.org/schema/integration/stream"
+	   xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	   xmlns:ws="http://www.springframework.org/schema/integration/ws"
+	   xmlns:int="http://www.springframework.org/schema/integration"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	                      http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/integration
+			http://www.springframework.org/schema/integration/spring-integration.xsd
+			http://www.springframework.org/schema/integration/stream
+			http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+			http://www.springframework.org/schema/integration/ws
+			http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd">
 	<int-http:inbound-gateway request-channel="receiveChannel"
                               reply-channel = "replyChannel"
                           path="/getWeatherByCityName/{cityName}"
                           supported-methods="GET"
 							  payload-expression="#pathVariables.cityName"/>
-						<!--payload-expression="<getWeatherbyCityName xmlns=\'http://WebXml.com.cn/\'> <theCityName>#pathVariables.cityName</theCityName> </getWeatherbyCityName>"/>-->
 	<int:channel id="receiveChannel"/>
 
 	<int:chain input-channel="receiveChannel" output-channel = "replyChannel">
         <int:service-activator ref="r2SoapTrans"/>
 		<!--<int:header-filter header-names="content-type" />-->
-		<ws:header-enricher>
-			<ws:soap-action value="http://WebXml.com.cn/getWeatherbyCityName"/>
-		</ws:header-enricher>
+		<!--<ws:header-enricher>-->
+			<!--<ws:soap-action value="http://WebXml.com.cn/getWeatherbyCityName"/>-->
+		<!--</ws:header-enricher>-->
 		<ws:outbound-gateway uri="http://www.webxml.com.cn/webservices/weatherwebservice.asmx"/>
 		<!--<int:service-activator expression="payload + ' from the other side'"/>-->
 	</int:chain>
