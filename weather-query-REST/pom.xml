@@ -45,6 +45,11 @@
             <artifactId>spring-integration-http</artifactId>
             <version>${spring-integration-version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.10</version>
+        </dependency>
 
         <!-- JSON -->
         <dependency>
@@ -86,9 +91,9 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.15.v20190215</version>
-                <configuration>
-                    <war>${project.basedir}/target</war>
-                </configuration>
+                <!--<configuration>-->
+                    <!--<war>${project.basedir}/target</war>-->
+                <!--</configuration>-->
             </plugin>
         </plugins>
     </build>
