@@ -17,18 +17,13 @@ import org.springframework.stereotype.Service;
 @Service("restProcessor")
 //@Component("restProcessor")
 public class RestProcessor {
-//    private static Log log = LogFactory.getLog(RestProcessor.class);
-//    @ServiceActivator //(inputChannel = "requestChan", outputChannel = "reply")
     public Message<String> get(Message<String> msg) {
-//        System.out.println("==========================================");
         log.info("==========================================");
         Object header = msg.getHeaders();
         Object payload = msg.getPayload();
-//        System.out.println(header.toString());
-//        System.out.println(payload.toString());
-        log.info(header.toString());
-        log.info(payload.toString());
-        GenericMessage<String> message= null;  //= new GenericMessage<String>("hellooooooooo!");
+        log.info("Header: " + header.toString());
+        log.info("Payload: " + payload.toString());
+        GenericMessage<String> message= null;
         /**
          * return a response as { "code" :200,  "message":"helloworld"}
          */
