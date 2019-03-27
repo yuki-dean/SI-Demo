@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:int-oxm="http://www.springframework.org/schema/oxm"
+       xmlns:stream="http://www.springframework.org/schema/integration/stream"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd">
+
+    <context:component-scan base-package="com.train.xmlBeanTransformer"/>
+
+    <int-xml:unmarshalling-transformer id="defaultUnmarshaller"
+                                       input-channel="input"
+                                       output-channel="output"
+                                       unmarshaller="unmarshaller"/>
+
+    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound" value="com.train.xmlBeanTransformer.response.DetailInfoByTrainCodeResponse"/>
+    </bean>
+
+
+    <int-xml:marshalling-transformer
+            input-channel="input2"
+            output-channel="output"
+            marshaller="marshaller"
+            result-type="StringResult"/>
+
+    <int-oxm:jaxb2-marshaller id="marshaller">
+        <int-oxm:class-to-be-bound name="com.train.xmlBeanTransformer.req.DetailInfoByTrainCodeReq"/>
+    </int-oxm:jaxb2-marshaller>
+
+    <stream:stdout-channel-adapter id="output"/>
+
+
+</beans>
