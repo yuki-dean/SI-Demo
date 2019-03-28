@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<getDetailInfoByTrainCodeResponse xmlns="http://WebXml.com.cn/">
+    <getDetailInfoByTrainCodeResult>
+        <xs:schema xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata"
+                   xmlns:xs="http://www.w3.org/2001/XMLSchema" id="getDetailInfo">
+            <xs:element msdata:IsDataSet="true" msdata:UseCurrentLocale="true" name="getDetailInfo">
+                <xs:complexType>
+                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                        <xs:element name="TrainDetailInfo">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element minOccurs="0" name="TrainStation" type="xs:string"/>
+                                    <xs:element minOccurs="0" name="ArriveTime" type="xs:string"/>
+                                    <xs:element minOccurs="0" name="StartTime" type="xs:string"/>
+                                    <xs:element minOccurs="0" name="KM" type="xs:short"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <diffgr:diffgram xmlns:diffgr="urn:schemas-microsoft-com:xml-diffgram-v1"
+                         xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+            <getDetailInfo xmlns="">
+                <TrainDetailInfo diffgr:hasChanges="inserted" diffgr:id="TrainDetailInfo1" msdata:rowOrder="0">
+                    <TrainStation>桂林北（车次：G2901）</TrainStation>
+                    <ArriveTime/>
+                    <StartTime>10:58:00</StartTime>
+                    <KM>1</KM>
+                </TrainDetailInfo>
+                <TrainDetailInfo diffgr:hasChanges="inserted" diffgr:id="TrainDetailInfo2" msdata:rowOrder="1">
+                    <TrainStation>钟山西</TrainStation>
+                    <ArriveTime>11:48:00</ArriveTime>
+                    <StartTime>11:50:00</StartTime>
+                    <KM>1</KM>
+                </TrainDetailInfo>
+                <TrainDetailInfo diffgr:hasChanges="inserted" diffgr:id="TrainDetailInfo3" msdata:rowOrder="2">
+                    <TrainStation>贺州</TrainStation>
+                    <ArriveTime>12:02:00</ArriveTime>
+                    <StartTime>12:05:00</StartTime>
+                    <KM>1</KM>
+                </TrainDetailInfo>
+                <TrainDetailInfo diffgr:hasChanges="inserted" diffgr:id="TrainDetailInfo4" msdata:rowOrder="3">
+                    <TrainStation>广州南</TrainStation>
+                    <ArriveTime>13:30:00</ArriveTime>
+                    <StartTime>13:34:00</StartTime>
+                    <KM>1</KM>
+                </TrainDetailInfo>
+                <TrainDetailInfo diffgr:hasChanges="inserted" diffgr:id="TrainDetailInfo5" msdata:rowOrder="4">
+                    <TrainStation>深圳北</TrainStation>
+                    <ArriveTime>14:03:00</ArriveTime>
+                    <StartTime/>
+                    <KM>1</KM>
+                </TrainDetailInfo>
+            </getDetailInfo>
+        </diffgr:diffgram>
+    </getDetailInfoByTrainCodeResult>
+</getDetailInfoByTrainCodeResponse>
