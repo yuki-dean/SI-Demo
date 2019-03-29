@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+       xmlns:stream="http://www.springframework.org/schema/integration/stream"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  http://www.springframework.org/schema/integration/xml http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.train"/>
+    <int-xml:marshalling-transformer
+            input-channel="weaInput1"
+            output-channel="weaOutput"
+            marshaller="myMarshaller"
+            result-type="StringResult"/>
+
+    <bean id="myMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound" value="com.train.bean.req.DetailInfoByTrainCodeReq"/>
+        <property name="marshallerProperties" value="#{T(com.train.xmlBeanTransformer.req.MarshallerProperties).properties}"/>
+    </bean>
+
+    <int-xml:unmarshalling-transformer id="defaultUnmarshaller"
+                                       input-channel="weaInput"
+                                       output-channel="weaOutput"
+                                       unmarshaller="unmarshaller"/>
+
+    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound" value="com.train.weather.Envelope"/>
+    </bean>
+
+    <int:channel id="weaOutput"/>
+    <stream:stdout-channel-adapter channel="weaOutput"/>
+</beans>

@@ -8,14 +8,16 @@
        http://www.springframework.org/schema/integration
        http://www.springframework.org/schema/integration/spring-integration.xsd
        http://www.springframework.org/schema/integration/http
-       http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+       http://www.springframework.org/schema/integration/http/spring-integration-http.xsd ">
 
-    <int:channel id="receiveChannel"/>
-    <int:channel id="processChannel"/>
+    <int:channel id="requestChannel"/>
+    <int:channel id="replyChannel"/>
 
-    <int-http:inbound-gateway request-channel="receiveChannel"
-                                path="/trainInfo/trainStation/{trainCode}"
-                                supported-methods="GET"
-                                payload-expression="#pathVariables.trainCode"/>
+    <int-http:inbound-gateway id="trainStation"
+                              path="/trainInfo/trainStation"
+                              request-channel="requestChannel"
+                              supported-methods="POST"
+                              reply-channel="replyChannel"
+    />
 
 </beans>

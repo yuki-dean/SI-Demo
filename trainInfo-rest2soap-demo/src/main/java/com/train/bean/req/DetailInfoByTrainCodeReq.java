@@ -1,4 +1,4 @@
-package com.train.xmlBeanTransformer.req;
+package com.train.bean.req;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

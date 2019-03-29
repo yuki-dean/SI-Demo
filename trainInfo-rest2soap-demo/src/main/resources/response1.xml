@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <getWeatherResponse xmlns="http://WebXml.com.cn/">
+            <getWeatherResult>
+                <string>直辖市 北京</string>
+                <string>北京</string>
+                <string>792</string>
+                <string>2019/03/29 09:31:27</string>
+                <string>今日天气实况：气温：6℃；风向/风力：南风 2级；湿度：28%</string>
+                <string>紫外线强度：最弱。空气质量：良。</string>
+                <string>紫外线指数：最弱，辐射弱，涂擦SPF8-12防晒护肤品。
+                    健臻·血糖指数：不易波动，天气条件不易引起血糖波动。
+                    穿衣指数：较冷，建议着厚外套加毛衣等服装。
+                    洗车指数：不宜，有雨，雨水和泥水会弄脏爱车。
+                    空气污染指数：良，气象条件有利于空气污染物扩散。
+                </string>
+                <string>3月29日 小雨转晴</string>
+                <string>4℃/13℃</string>
+                <string>西北风3-4级转4-5级</string>
+                <string>7.gif</string>
+                <string>0.gif</string>
+                <string>3月30日 晴</string>
+                <string>1℃/13℃</string>
+                <string>北风4-5级转小于3级</string>
+                <string>0.gif</string>
+                <string>0.gif</string>
+                <string>3月31日 晴</string>
+                <string>2℃/16℃</string>
+                <string>西北风3-4级转北风小于3级</string>
+                <string>0.gif</string>
+                <string>0.gif</string>
+                <string>4月1日 晴</string>
+                <string>5℃/18℃</string>
+                <string>东南风转东北风小于3级</string>
+                <string>0.gif</string>
+                <string>0.gif</string>
+                <string>4月2日 晴转多云</string>
+                <string>6℃/18℃</string>
+                <string>南风小于3级</string>
+                <string>0.gif</string>
+                <string>1.gif</string>
+            </getWeatherResult>
+        </getWeatherResponse>
+    </soap:Body>
+</soap:Envelope>

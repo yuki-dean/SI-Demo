@@ -8,32 +8,36 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/integration
-       http://www.springframework.org/schema/integration/spring-integration.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/integration/ws http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd">
+       http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/integration/ws
+       http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
+       http://www.springframework.org/schema/integration/stream
+       http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd">
 
     <context:component-scan base-package="com.train"/>
 
-    <!--<int:channel id="wsRespChannel"/>-->
-    <int:channel id="wsRespProcessChannel"/>
-
     <import resource="classpath:/META-INF/spring/integration/trainInfo-inbound-gateway.xml"/>
+    <import resource="classpath:/META-INF/spring/integration/json-bean-transformer.xml"/>
+    <import resource="classpath:/META-INF/spring/integration/xml-bean-transformer.xml"/>
+
 
     <int:service-activator
-            ref="rest2SoapReqService"
-            input-channel="receiveChannel"
-                           output-channel="processChannel"/>
+            ref="wrapperSoapReqService"
+            method="wrapperSoapReq"
+            input-channel="beanXmlChannel"
+            output-channel="wsReqChannel"/>
 
-    <!--<stream:stdout-channel-adapter id="processChannel"/>-->
-
-    <int:chain input-channel="processChannel" output-channel="wsRespChannel">
+    <int:chain input-channel="wsReqChannel" output-channel="wsRespChannel">
         <int-ws:header-enricher>
             <int-ws:soap-action value="http://WebXml.com.cn/getDetailInfoByTrainCode"/>
         </int-ws:header-enricher>
         <int-ws:outbound-gateway uri="http://www.webxml.com.cn/WebServices/TrainTimeWebService.asmx"/>
     </int:chain>
+    
+    <stream:stdout-channel-adapter id="wsRespChannel"/>
 
-    <!--<stream:stdout-channel-adapter id="wsRespChannel"/>-->
-
-    <int:service-activator ref="soapResp2restService" input-channel="wsRespChannel" output-channel="wsRespProcessChannel"/>
-    <int:service-activator input-channel="wsRespProcessChannel" expression="payload"/>
+    <int:service-activator input-channel="beanJsonChannel" expression="payload"/>
 
 </beans>
