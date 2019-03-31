@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <getWeatherResponse xmlns="http://WebXml.com.cn/">
+            <getWeatherResult>
+                <string>直辖市 北京</string>
+                <string>北京</string>
+                <string>792</string>
+                <string>2019/03/31 10:36:55</string>
+                <string>今日天气实况：气温：11℃；风向/风力：西南风 3级；湿度：12%</string>
+                <string>紫外线强度：弱。空气质量：良。</string>
+                <string>紫外线指数：弱，辐射较弱，涂擦SPF12-15、PA+护肤品。
+                    健臻·血糖指数：不易波动，天气条件好，血糖不易波动，可适时进行户外锻炼。
+                    穿衣指数：较冷，建议着厚外套加毛衣等服装。
+                    洗车指数：较适宜，无雨且风力较小，易保持清洁度。
+                    空气污染指数：良，气象条件有利于空气污染物扩散。
+                </string>
+                <string>3月31日 多云转晴</string>
+                <string>2℃/16℃</string>
+                <string>西北风3-4级转西南风小于3级</string>
+                <string>1.gif</string>
+                <string>0.gif</string>
+                <string>4月1日 晴</string>
+                <string>3℃/16℃</string>
+                <string>南风小于3级</string>
+                <string>0.gif</string>
+                <string>0.gif</string>
+                <string>4月2日 晴</string>
+                <string>4℃/19℃</string>
+                <string>东北风转南风小于3级</string>
+                <string>0.gif</string>
+                <string>0.gif</string>
+                <string>4月3日 多云</string>
+                <string>6℃/20℃</string>
+                <string>西南风3-4级转小于3级</string>
+                <string>1.gif</string>
+                <string>1.gif</string>
+                <string>4月4日 晴</string>
+                <string>10℃/26℃</string>
+                <string>北风3-4级转小于3级</string>
+                <string>0.gif</string>
+                <string>0.gif</string>
+            </getWeatherResult>
+        </getWeatherResponse>
+    </soap:Body>
+</soap:Envelope>
