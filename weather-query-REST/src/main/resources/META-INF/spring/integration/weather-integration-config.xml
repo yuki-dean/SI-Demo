@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/integration/xml
+            http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd
+            http://www.springframework.org/schema/integration/ws
+            http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/integration
+            http://www.springframework.org/schema/integration/spring-integration.xsd
+            http://www.springframework.org/schema/integration/http
+            http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+            http://www.springframework.org/schema/integration/ws
+            http://www.sprintframework.org/schema/integration/ws/spring-int">
+
+    <int:annotation-config/>
+    <context:component-scan base-package="com.caih.iexp.utils"/>
+
+    <int:channel id="reply-channel"/>
+
+    <int-http:inbound-gateway id="inbound"
+                              request-channel="json-in-channel"
+                              reply-channel="reply-channel"
+                              supported-methods="POST"
+                              path="/getWeather"/>
+
+    <int:channel id="json-in-channel"/>
+
+    <int:json-to-object-transformer input-channel="json-in-channel"
+                                    object-mapper="customObjectMapper"
+                                    output-channel="bean-channel"
+                                    type="com.caih.iexp.model.weatherRequest.GetWeather"/>
+
+    <bean id="customObjectMapper" class="com.caih.iexp.utils.objMapper.ObjectMapperFactory" factory-method="getMapper"/>
+
+    <int:channel id="bean-channel"/>
+
+    <int-xml:marshalling-transformer input-channel="bean-channel"
+                                     output-channel="xml-channel"
+                                     marshaller="marshaller"
+                                     result-type="StringResult"/>
+
+    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="packagesToScan" value="com.caih.iexp.model.weatherRequest"/>
+        <property name="marshallerProperties" value="#{T(com.caih.iexp.model.weatherRequest.MarshallerProperties).properties}"/>
+        <!--<property name="classesToBeBound" value="com.caih.iexp.model.weatherRequest.GetWeather"/>-->
+        <!--<property name="marshallerProperties">
+            <map>
+                <entry key="javax.xml.bind.Marshaller.JAXB_FRAGMENT" value="true"/>
+                <entry key="javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT" value="true"/>
+            </map>
+        </property>-->
+    </bean>
+
+    <int:channel id="xml-channel"/>
+
+    <int:service-activator id="headerWrapper"
+                           ref="wsWrapper"
+                           method="addHeader"
+                           input-channel="xml-channel"
+                           output-channel="wrapped-channel"/>
+
+    <bean id="wsWrapper" class="com.caih.iexp.utils.WsWrapper"/>
+
+
+    <int:channel id="wrapped-channel"/>
+
+
+    <int-ws:header-enricher id="wsEnricher" input-channel="wrapped-channel" output-channel="to-outbound-channel">
+        <int-ws:soap-action value="http://WebXml.com.cn/getWeather"/>
+    </int-ws:header-enricher>
+
+    <int:channel id="to-outbound-channel"/>
+
+    <int-ws:outbound-gateway id="outBound"
+                             request-channel="to-outbound-channel"
+                             reply-channel="from-outbound-channel"
+                             uri="http://ws.webxml.com.cn/WebServices/WeatherWS.asmx"/>
+
+    <int:channel id="from-outbound-channel"/>
+
+    <int:service-activator id="rspChecker"
+                           input-channel="from-outbound-channel"
+                           output-channel="check-channel"
+                           ref="xmlCheck"
+                           method="check"/>
+
+    <bean id="xmlCheck" class="com.caih.iexp.utils.XmlCheck"/>
+
+    <int:channel id="check-channel"/>
+
+    <int-xml:unmarshalling-transformer input-channel="check-channel"
+                                       output-channel="xml2Bean-channel"
+                                       unmarshaller="unmarshaller"/>
+
+    <bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <!--<property name="packagesToScan" value="com.caih.iexp.model.weatherResponse"/>-->
+        <property name="classesToBeBound" value="com.caih.iexp.model.weatherResponse.GetWeatherResponse"/>
+    </bean>
+
+    <int:channel id="xml2Bean-channel"/>
+
+    <int:service-activator id="replyBeanBuilder"
+                           input-channel="xml2Bean-channel"
+                           output-channel="bean2Json-channel"
+                           ref="beanBuilder"
+                           method="getJsonBean"/>
+
+    <bean id="beanBuilder" class="com.caih.iexp.utils.BeanBuilder"/>
+
+    <int:channel id="bean2Json-channel"/>
+
+    <int:object-to-json-transformer id="bean2json"
+                                    input-channel="bean2Json-channel"
+                                    output-channel="reply-channel"/>
+</beans>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/integration/xml
+            http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd
+            http://www.springframework.org/schema/integration/ws
+            http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/integration
+            http://www.springframework.org/schema/integration/spring-integration.xsd
+            http://www.springframework.org/schema/integration/http
+            http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+            http://www.springframework.org/schema/integration/ws
+            http://www.sprintframework.org/schema/integration/ws/spring-int">
+
+    <int:annotation-config/>
+    <context:component-scan base-package="com.caih.iexp.weatherQueryREST"/>
+
+    <int:channel id="getWeather-requestChan"/>
+    <int:channel id="getWeather-jsonToObjChan"/>
+    <int:channel id="getWeather-objToXmlChan"/>
+    <int:channel id="getWeather-replyToRESTChan"/>
+
+    <int-http:inbound-gateway id="getWeather-restInboundGW"
+                              request-channel="getWeather-requestChan"
+                              reply-channel="getWeather-replyToRESTChan"
+                              supported-methods="POST"
+                              path="/getWeather"/>
+
+    <int:json-to-object-transformer input-channel="getWeather-requestChan"
+                                    object-mapper="customObjectMapper"
+                                    output-channel="getWeather-jsonToObjChan"
+                                    type="com.caih.iexp.utils.JsonUtil.CityCode"
+                                    />
+
+    <bean id="customObjectMapper" class="com.caih.iexp.utils.objMapper.ObjectMapperFactory" factory-method="getMapper"/>
+    
+    <int:service-activator id="getProcessor"
+                           ref="weatherService"
+                           method="getXml"
+                           input-channel="getWeather-jsonToObjChan"
+                           output-channel="getWeather-objToXmlChan"/>
+
+    <int:channel id="outEnricherChan"/>
+
+    <int-ws:header-enricher id="wsEnricher" input-channel="getWeather-objToXmlChan" output-channel="outEnricherChan">
+        <int-ws:soap-action value="webxml.com.cn/getWeather"/>
+    </int-ws:header-enricher>
+
+    <int-ws:outbound-gateway id="getWeather-WSOutboundGW"
+                             request-channel="outEnricherChan"
+                             reply-channel="geWeather-replyToRESTChan"
+                             uri="ws.webxml.com.cn/WebServices/WeatherWS.asmx"/>
+
+</beans>
