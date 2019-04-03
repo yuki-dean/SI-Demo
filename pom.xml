@@ -9,13 +9,11 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>rest-soap-mvc-demo</module>
-        <module>SimpleDemo</module>
-        <module>http</module>
         <module>ws-outbound-gateway</module>
         <module>weather-query-REST</module>
         <module>java-dsl</module>
         <module>mytest</module>
+        <module>web-flux-demo</module>
     </modules>
 
 

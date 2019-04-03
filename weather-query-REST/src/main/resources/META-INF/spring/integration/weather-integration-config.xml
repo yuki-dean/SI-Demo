@@ -53,7 +53,7 @@
         <property name="packagesToScan" value="com.caih.iexp.model.weatherRequest"/>
         <property name="marshallerProperties" value="#{T(com.caih.iexp.model.weatherRequest.MarshallerProperties).properties}"/>
         <!--<property name="classesToBeBound" value="com.caih.iexp.model.weatherRequest.GetWeather"/>-->
-        <!--<property name="marshallerProperties">
+<!--        <property name="marshallerProperties">
             <map>
                 <entry key="javax.xml.bind.Marshaller.JAXB_FRAGMENT" value="true"/>
                 <entry key="javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT" value="true"/>

@@ -7,23 +7,17 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Service;
-import test.model.weatherRequest.Body;
-import test.model.weatherRequest.GetWeather;
-import test.model.weatherRequest.WeatherRequest;
-import test.model.weatherResponse.WeatherResponse;
 
 import java.io.*;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 
-@Service("unmarshallService")
-public class unmarshallService {
+@Service("UnmarshallService")
+public class UnmarshallService {
         public static final String path = "E:\\workspace\\SI-Demo\\mytest\\src\\main\\resources\\weatherResponse.xml";
     public static void main(String[] args) throws Exception{
         File xmlFile = new File(path);
         InputStream in = null;
         StringReader stringReader = null;
-        AbstractApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/xmlUnmarshaller-config.xml", unmarshallService.class);
+        AbstractApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/xmlUnmarshaller-config.xml", UnmarshallService.class);
         MessageChannel fileInChannel = context.getBean("fileIn-channel", MessageChannel.class);
         PollableChannel printChannel = context.getBean("print-channel", PollableChannel.class);
         in = new FileInputStream(xmlFile);

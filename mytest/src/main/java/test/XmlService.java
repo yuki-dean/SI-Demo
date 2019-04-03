@@ -1,5 +1,6 @@
 package test;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.messaging.Message;
@@ -11,9 +12,11 @@ import test.model.weatherRequest.Body;
 import test.model.weatherRequest.GetWeather;
 import test.model.weatherRequest.WeatherRequest;
 
+@Slf4j
 @Service("xmlService")
 public class XmlService {
     public static void main(String[] args) {
+        log.info("------------ xmlService start! ---------------");
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/xmlMarshaller-config.xml", XmlService.class);
         MessageChannel inChannel = context.getBean("in-channel", MessageChannel.class);
         PollableChannel outChannel = context.getBean("out-channel", PollableChannel.class);
@@ -27,8 +30,10 @@ public class XmlService {
         inChannel.send(msg);
         Message rcvMsg = outChannel.receive();
         Object payload = rcvMsg.getPayload();
-        System.out.println("Type of Payload:" + payload.getClass());
-        System.out.println("Payload: " + payload.toString());
+//        System.out.println("Type of Payload:" + payload.getClass());
+        log.info("Type of Payload:" + payload.getClass());
+//        System.out.println("Payload: " + payload.toString());
+        log.info("Payload: " + payload.toString());
 //        System.out.println("==========" + outChannel.receive() + "=============");
         context.close();
     }

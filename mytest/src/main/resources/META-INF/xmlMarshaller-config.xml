@@ -13,39 +13,44 @@
 
     <int:channel id="in-channel"/>
     <int:channel id="out-channel">
-        <!--<int:queue capacity="10"/>-->
+        <int:queue capacity="10"/>
     </int:channel>
 
-    <!--<int-xml:marshalling-transformer
+    <int-xml:marshalling-transformer
             input-channel="in-channel"
             output-channel="out-channel"
             marshaller="marshaller"
             result-type="StringResult">
-    </int-xml:marshalling-transformer>-->
+    </int-xml:marshalling-transformer>
 
-<!--<bean id="marshaller"
+<bean id="marshaller"
       class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-    &lt;!&ndash;<property name="classesToBeBound" value="test.weatherRequest.WeatherRequest"/>&ndash;&gt;
+    <!--<property name="classesToBeBound" value="test.weatherRequest.WeatherRequest"/>-->
     <property name="packagesToScan">
         <value>test.model.weatherRequest</value>
     </property>
-    <property name="marshallerProperties" value="#{T(test.model.weatherRequest.MarshallerProperties).properties}"/>
-</bean>-->
+    <!--<property name="marshallerProperties" value="#{T(test.model.weatherRequest.MarshallerProperties).properties}"/>-->
+    <property name="marshallerProperties">
+        <map>
+            <entry key="#{T(javax.xml.bind.Marshaller).JAXB_FRAGMENT}" value="#{true}"/>
+        </map>
+    </property>
+</bean>
 
 <!--<int-stream:stdout-channel-adapter id="stdout" channel="out-channel"/>-->
-    
-    <int-xml:marshalling-transformer input-channel="in-channel"
+
+  <!--  <int-xml:marshalling-transformer input-channel="in-channel"
                                      output-channel="out-channel"
                                      marshaller="marshaller"
                                      result-type="StringResult"/>
-                                     <!--result-transformer="resultTransformer"/>-->
+                                     &lt;!&ndash;result-transformer="resultTransformer"/>&ndash;&gt;
 
-    <!--<bean id="resultTransformer" class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>-->
+    &lt;!&ndash;<bean id="resultTransformer" class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>&ndash;&gt;
 
     <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound" value="test.model.weatherRequest.WeatherRequest"/>
         <property name="marshallerProperties" value="#{T(test.model.weatherRequest.MarshallerProperties).properties}"/>
-    </bean>
+    </bean>-->
 
 
 </beans>

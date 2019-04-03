@@ -4,7 +4,6 @@
        xmlns:int="http://www.springframework.org/schema/integration"
        xmlns:int-http="http://www.springframework.org/schema/integration/http"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:beans="http://www.springframework.org/schema/beans"
        xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
        xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
        xsi:schemaLocation="
@@ -73,14 +72,14 @@
 
     <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="packagesToScan" value="com.caih.iexp.model.weatherRequest"/>
-        <property name="marshallerProperties" value="#{T(com.caih.iexp.model.weatherRequest.MarshallerProperties).properties}"/>
+        <!--<property name="marshallerProperties" value="#{T(com.caih.iexp.model.weatherRequest.MarshallerProperties).properties}"/>-->
         <!--<property name="classesToBeBound" value="com.caih.iexp.model.weatherRequest.GetWeather"/>-->
-        <!--<property name="marshallerProperties">
+        <property name="marshallerProperties">
             <map>
-                <entry key="javax.xml.bind.Marshaller.JAXB_FRAGMENT" value="true"/>
-                <entry key="javax.xml.bind.Marshaller.JAXB_FORMATTED_OUTPUT" value="true"/>
+                <entry key="#{T(javax.xml.bind.Marshaller).JAXB_FRAGMENT}" value="#{true}"/>
+                <entry key="#{T(javax.xml.bind.Marshaller).JAXB_FORMATTED_OUTPUT}" value="#{true}"/>
             </map>
-        </property>-->
+        </property>
     </bean>
 
     <bean id="wsWrapper" class="com.caih.iexp.utils.WsWrapper"/>
