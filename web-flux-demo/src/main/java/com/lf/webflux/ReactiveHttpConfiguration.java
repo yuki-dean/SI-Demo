@@ -2,6 +2,7 @@ package com.lf.webflux;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +12,15 @@ import org.springframework.integration.http.inbound.RequestMapping;
 import org.springframework.integration.webflux.inbound.WebFluxInboundEndpoint;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-@Configuration
-@EnableAutoConfiguration
+//@Configuration
+//@EnableAutoConfiguration
+@SpringBootApplication
 @EnableWebFlux
 @EnableIntegration
 public class ReactiveHttpConfiguration {
 
     public static void main(String[] args){
         ConfigurableApplicationContext ctx = SpringApplication.run(ReactiveHttpConfiguration.class, args);
-
     }
     @Bean
     public WebFluxInboundEndpoint simpleInboundEndpoint() {
