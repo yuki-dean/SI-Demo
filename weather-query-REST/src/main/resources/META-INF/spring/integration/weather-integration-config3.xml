@@ -4,7 +4,7 @@
        xmlns:int="http://www.springframework.org/schema/integration"
        xmlns:int-http="http://www.springframework.org/schema/integration/http"
        xmlns:context="http://www.springframework.org/schema/context"
-
+       xmlns:int-webflux="http://www.springframework.org/schema/integration/webflux"
        xmlns:int-ws="http://www.springframework.org/schema/integration/ws"
        xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
        xsi:schemaLocation="
@@ -20,7 +20,9 @@
             http://www.springframework.org/schema/integration/http
             http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
             http://www.springframework.org/schema/integration/ws
-            http://www.sprintframework.org/schema/integration/ws/spring-int">
+            http://www.sprintframework.org/schema/integration/ws/spring-int
+            http://www.springframework.org/schema/integration/webflux
+            http://www.springframework.org/schema/integration/webflux/spring-integration-webflux.xsd">
 
 
     <context:property-placeholder location="classpath:integration.properties"/>
@@ -35,20 +37,24 @@
     <!--<int:channel id="request-channel"/>-->
 
 
-    <int:channel id="${channel1}"/>
-    <int:channel id="${channel2}"/>
-    <!--<int:channel id="req-channel"/>-->
-    <!--<int:channel id="resp-channel"/>-->
-    <!-- not delete Module GetWeather -->
-    <int-http:inbound-gateway id="inbound"
-                              request-channel="${channel2}"
-                              reply-channel="${channel1}"
-                              supported-methods="POST"
-                              path="/getWeather"/>
+    <int:channel id="in-channel"/>
+    <int:channel id="out-channel"/>
 
+    <!-- not delete Module GetWeather -->
+   <!-- <int-http:inbound-gateway id="inbound"
+                              request-channel="${inChannel}"
+                              reply-channel="${outChannel}"
+                              supported-methods="POST"
+                              path="/getWeather"/>-->
+
+    <int-webflux:inbound-gateway id="inbound" request-channel="${inChannel}"
+                                 reply-channel="${outChannel}"
+                                 auto-startup="true"
+                                 path="getWeather"
+                                 supported-methods="POST"/>
 
     <int:chain id="json2xml"
-               input-channel="${channel2}"
+               input-channel="${inChannel}"
                output-channel="to-outbound-channel">
         <int:json-to-object-transformer object-mapper="customObjectMapper"
                                         type="com.caih.iexp.model.weatherRequest.GetWeather"/>
@@ -65,12 +71,12 @@
     <int:channel id="to-outbound-channel"/>
     <int:channel id="from-outbound-channel"/>
 
-    <int-ws:outbound-gateway id="outBound"
+    <int-ws:outbound-gateway id="outbound"
                              request-channel="to-outbound-channel"
                              reply-channel="from-outbound-channel"
                              uri="http://ws.webxml.com.cn/WebServices/WeatherWS.asmx"/>
 
-    <int:chain id="xml2json" input-channel="from-outbound-channel" output-channel="${channel1}">
+    <int:chain id="xml2json" input-channel="from-outbound-channel" output-channel="${outChannel}">
         <int:service-activator id="rspChecker"
                                ref="xmlCheck"
                                method="check"/>
